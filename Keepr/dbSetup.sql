@@ -14,9 +14,9 @@ CREATE TABLE
         name VARCHAR(255) NOT NULL,
         description VARCHAR(255) NOT NULL,
         img VARCHAR(255) NOT NULL,
-        views INT NOT NULL,
-        kept INT NOT NULL,
-        shares INT NOT NULL,
+        views INT DEFAULT 0 NOT NULL,
+        kept INT DEFAULT 0 NOT NULL,
+        shares INT DEFAULT 0 NOT NULL,
         creatorId VARCHAR(255),
         FOREIGN KEY (creatorId) REFERENCES accounts(id) ON DELETE CASCADE
     ) default charset utf8 COMMENT '';
