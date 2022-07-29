@@ -34,5 +34,13 @@ namespace Keepr.Services
             }
             return found;
         }
+
+        internal Keep Delete(int id)
+        {
+            Keep deleteCandidate = GetById(id);
+            _repo.Delete(id);
+            return deleteCandidate;
+
+        }
     }
 }

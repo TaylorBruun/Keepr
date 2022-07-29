@@ -35,13 +35,19 @@ namespace Keepr.Repositories
             }).ToList();
         }
 
+
         internal Keep GetById(int id)
         {
-            string sql = "SELECT accounts.*, keeps.* FROM keeps JOIN accounts ON accounts.id = keeps.creatorId WHERE keeps.id=@id";
+            string sql = "SELECT accounts.*, keeps.* FROM keeps JOIN accounts ON accounts.id = keeps.creatorId WHERE keeps.id=@id LIMIT 1";
             return _db.Query<Profile, Keep, Keep>(sql, (profile, keep) =>{
                 keep.Creator = profile;
                 return keep;
             }, new{id}).FirstOrDefault();
+        }
+        internal void Delete(int id)
+        {
+            string sql = "DELETE FROM keeps WHERE id = @id LIMIT 1";
+            _db.Execute(sql, new {id});
         }
     }
 }

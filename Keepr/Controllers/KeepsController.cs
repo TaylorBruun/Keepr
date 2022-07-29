@@ -72,7 +72,20 @@ namespace Keepr.Controllers
         }
 
 
-        
+        [HttpDelete("{id}")]
+        public ActionResult<string> Delete(int id)
+        {
+
+            try
+            {
+                Keep keep = _keepsService.Delete(id);
+                return Ok(keep);
+            }
+            catch (System.Exception exception)
+            {
+                return BadRequest(exception.Message);
+            }
+        }
     }
 }
 
