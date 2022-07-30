@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using Dapper;
@@ -43,6 +44,26 @@ namespace Keepr.Repositories
         {
             string sql = "DELETE FROM vaults WHERE id = @id LIMIT 1";
             _db.Execute(sql, new {id});
+        }
+
+        internal List<Vault> GetVaultsByProfile(string profileId)
+        
+            {
+            string sql = "SELECT vaults.*, accounts.* FROM vaults JOIN accounts ON vaults.creatorId = accounts.id WHERE vaults.creatorId = @profileId AND vaults.isPrivate = 0;";
+            return _db.Query<Vault, Profile, Vault>(sql, (vault, profile)=>{
+                vault.Creator = profile;
+                return vault;
+            }, new{profileId}).ToList();
+        
+        }
+
+        internal List<Vault> GetVaultsByAccount(string id)
+        {
+            string sql = "SELECT vaults.*, accounts.* FROM vaults JOIN accounts ON vaults.creatorId = accounts.id WHERE vaults.creatorId = @id;";
+            return _db.Query<Vault, Profile, Vault>(sql, (vault, profile)=>{
+                vault.Creator = profile;
+                return vault;
+            }, new{id}).ToList();
         }
     }
 }
