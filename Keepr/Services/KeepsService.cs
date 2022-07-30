@@ -35,6 +35,14 @@ namespace Keepr.Services
             return found;
         }
 
+        internal Keep Update(Keep keepUpdate)
+        {
+            Keep original = GetById(keepUpdate.Id);
+            original.Name = keepUpdate.Name ?? original.Name;
+            original.Description = keepUpdate.Description ?? original.Name;
+            _repo.Update(original);
+            return original;
+        }
         internal Keep Delete(int id, string userId)
         {
             Keep deleteCandidate = GetById(id);
@@ -46,13 +54,11 @@ namespace Keepr.Services
 
         }
 
-        internal Keep Update(Keep keepUpdate)
+        internal List<VaultKeepViewModel> GetKeepsByVault(int vaultId, string userId)
         {
-            Keep original = GetById(keepUpdate.Id);
-            original.Name = keepUpdate.Name ?? original.Name;
-            original.Description = keepUpdate.Description ?? original.Name;
-            _repo.Update(original);
-            return original;
+
+            //TODO consider some sort of check so you cannot get keeps of a private vault that isn't yours?
+            return _repo.GetKeepsByVault(vaultId);
         }
     }
 }

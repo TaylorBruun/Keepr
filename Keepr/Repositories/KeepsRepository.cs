@@ -47,8 +47,18 @@ namespace Keepr.Repositories
 
         internal void Update(Keep update)
         {
-            string sql = "UPDATE keeps SET name = @Name, description = @Description WHERE id = @Id;";
+            string sql = "UPDATE keeps SET name = @Name, description = @Description WHERE id = @Id LIMIT 1;";
             _db.Execute(sql, update);
+        }
+
+        internal List<VaultKeepViewModel> GetKeepsByVault(int vaultId)
+        {
+            string sql = "SELECT keeps.*, accounts.*, vaultKeeps.id from keeps JOIN vaultKeeps ON vaultKeeps.keepId = keeps.id JOIN accounts ON accounts.id = keeps.creatorId WHERE vaultKeeps.vaultId = @vaultId;";
+            return _db.Query<VaultKeepViewModel, Profile, VaultKeep, VaultKeepViewModel>(sql, (vaultKeepViewModel, profile, vaultKeep) => {
+                vaultKeepViewModel.Creator = profile;
+                vaultKeepViewModel.vaultKeepId = vaultKeep.Id;
+                return vaultKeepViewModel;
+            }, new{vaultId}).ToList();
         }
 
         internal void Delete(int id)

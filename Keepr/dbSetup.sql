@@ -42,4 +42,4 @@ CREATE TABLE
         FOREIGN KEY (keepId) REFERENCES keeps(id)
     ) default charset utf8 COMMENT '';
 
-) 
+SELECT keeps.*, accounts.*, vaultKeeps.id from keeps JOIN vaultKeeps ON vaultKeeps.keepId = keeps.id JOIN accounts ON accounts.id = keeps.creatorId WHERE vaultKeeps.vaultId = 28;
