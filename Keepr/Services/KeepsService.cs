@@ -35,12 +35,24 @@ namespace Keepr.Services
             return found;
         }
 
-        internal Keep Delete(int id)
+        internal Keep Delete(int id, string userId)
         {
             Keep deleteCandidate = GetById(id);
+            if(deleteCandidate.CreatorId != userId){
+                throw new Exception("You cannot delete a Keep you did not create.");
+            }
             _repo.Delete(id);
             return deleteCandidate;
 
+        }
+
+        internal Keep Update(Keep keepUpdate)
+        {
+            Keep original = GetById(keepUpdate.Id);
+            original.Name = keepUpdate.Name ?? original.Name;
+            original.Description = keepUpdate.Description ?? original.Name;
+            _repo.Update(original);
+            return original;
         }
     }
 }
