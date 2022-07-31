@@ -1,8 +1,8 @@
 <template>
-    <div class="masonry-frame m-2 p-2">
+  <div class="masonry-frame m-2 p-2">
 
-      <Keep v-for="k in keeps" :key=k.id :keep=k />
-    </div>
+    <Keep v-for="k in keeps" :key=k.id :keep=k />
+  </div>
 
 </template>
 
@@ -32,10 +32,21 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.masonry-frame {
-  columns: 3;
-  div {
-    break-inside: avoid;
+  .masonry-frame {
+    columns: 4;
+  
+    div {
+      break-inside: avoid;
+    }
+  }
+@media (max-width: 768px) {
+  .masonry-frame {
+    columns: 2;
+
+    div {
+      break-inside: avoid;
+    }
   }
 }
+
 </style>
