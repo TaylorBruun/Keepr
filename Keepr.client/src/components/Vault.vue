@@ -1,7 +1,7 @@
 <template>
 
-    <!-- <div :style="{ backgroundImage: `url(${firstImgInVault})`, minHeight: variedHeight }" class="position-relative vault-card p-3 m-2"> -->
-    <div :style="{ minHeight: variedHeight }" class="vault-card p-3 m-2">
+    <!-- TODO get the picture to display on first visit to profile page -->
+    <div @click="goToVault" :style="{ minHeight: variedHeight }" class="vault-card p-3 m-2">
         <h3>{{ vault.name }}</h3>
         <h6>{{ vault.description }}</h6>
         <img class="img-fluid" :src="firstPicture" alt="">
@@ -28,6 +28,11 @@ import { AppState } from '../AppState'
 export default {
     props: { vault: { type: Object, required: true } },
     setup(props) {
+
+        const router = useRouter();
+        let variedHeight = heightWiggle();
+        let firstPicture = keepsService.findVault(props.vault.id).firstPicture
+
         function heightWiggle() {
             return (Math.random() * 10 + 25).toFixed() + "vh"
         };
@@ -40,13 +45,13 @@ export default {
                 logger.error(error)
             }
         })
-        let firstPicture = keepsService.findVault(props.vault.id).firstPicture
-        const router = useRouter();
-        let variedHeight = heightWiggle();
+        
         return {
             variedHeight,
             firstPicture,
-            
+            goToVault() {
+                router.push({ name: "Vault", params: { id: props.vault.id } })
+            }
         }
     }
 }

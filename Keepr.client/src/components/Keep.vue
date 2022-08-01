@@ -6,7 +6,7 @@
         <h3>{{ keep.name }}</h3>
         <h6>Keeps: {{ keep.kept }}| Views: {{ keep.views }}</h6>
         <h6>{{ keep.description }}</h6>
-        <img v-if="route.name != 'Profile'" @click.stop="goProfile"
+        <img v-if="route.name != 'Profile'" @click.stop="goToProfile"
             class="m-2 creator-img position-absolute bottom-0 end-0" :src="keep.creator.picture" alt="">
 
     </div>
@@ -32,8 +32,7 @@ export default {
         return {
             route,
             variedHeight,
-            goProfile() {
-                logger.log('pushing with id', props.keep.creatorId)
+            goToProfile() {
                 router.push({ name: "Profile", params: { id: props.keep.creatorId } })
             },
 

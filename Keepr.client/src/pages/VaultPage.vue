@@ -6,9 +6,22 @@
 
 
 <script>
+import { onMounted } from 'vue'
+import { useRoute } from 'vue-router'
+import { vaultsService } from '../services/VaultsService'
+
 export default {
     setup(){
-        return {}
+
+      const route = useRoute()
+
+      onMounted(()=>{
+        vaultsService.getVaultById(route.params.id)
+      })
+
+        return {
+          route,
+        }
     }
 }
 </script>

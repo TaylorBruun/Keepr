@@ -12,15 +12,12 @@ class KeepsService{
 
  async GetKeepsByVault(vaultId){
    const res = await api.get(`api/vaults/${vaultId}/keeps`)
-   
-   // return res.data
    let imgUrl = res.data[0]?.img
    this.setFirstPicture(vaultId, imgUrl)
  }
 
  findVault(vaultId){
    let found = AppState.currentProfileVaults.filter(vault => vault.id == vaultId)
-   logger.log('here is found result', found[0])
    return found[0]
  }
 
