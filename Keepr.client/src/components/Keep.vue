@@ -43,6 +43,7 @@ export default {
 
 
 <style lang="scss" scoped>
+@import "../assets/scss/variables";
 .keep-card {
     background-color: rgb(224, 236, 238);
     color: rgb(5, 5, 5);

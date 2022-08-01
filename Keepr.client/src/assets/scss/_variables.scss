@@ -8,6 +8,11 @@ $danger: #ea0606;
 $light: #e9ecef;
 $dark: #111927;
 $grey: #cbcbcb;
+$keepr-primary: #55EFC4;
+$keepr-secondary: #00B894;
+$keepr-trim: #81ECEC;
+$keepr-bg: #DFE6E9;
+
 
 $font-sans-serif: Open Sans;
 $font-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
@@ -22,6 +27,10 @@ $colors: (
   "info": $info,
   "dark": $dark,
   "grey": $grey,
+  "keepr-primary": $keepr-primary,
+  "keepr-secondary": $keepr-secondary,
+  "keepr-trim": $keepr-trim,
+  "keepr-bg": $keepr-bg,
 );
 
 $color-ranges: (

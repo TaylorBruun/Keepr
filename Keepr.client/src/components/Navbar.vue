@@ -2,7 +2,7 @@
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-3">
     <router-link class="navbar-brand d-flex" :to="{ name: 'Home' }">
       <div class="d-flex flex-column align-items-center">
-        <h2>🗝</h2>
+        <h2 class=""> <img class="icon" src="../assets/img/Keepr.png" alt="">  Keepr</h2>
       </div>
     </router-link>
     <button
@@ -34,7 +34,17 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+@import "../assets/scss/variables";
+
+.navbar{
+  background-color: $keepr-primary !important;
+}
+
+.icon{
+  width: 60px;
+}
+
 a:hover {
   text-decoration: none;
 }
