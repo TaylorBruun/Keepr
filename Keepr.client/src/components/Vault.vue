@@ -1,10 +1,10 @@
 <template>
 
     <!-- <div :style="{ backgroundImage: `url(${firstImgInVault})`, minHeight: variedHeight }" class="position-relative vault-card p-3 m-2"> -->
-    <div :style="{minHeight: variedHeight}"  class="vault-card p-3 m-2">
+    <div :style="{ minHeight: variedHeight }" class="vault-card p-3 m-2">
         <h3>{{ vault.name }}</h3>
         <h6>{{ vault.description }}</h6>
-        <img class="img-fluid" src="https://images.unsplash.com/photo-1577373644244-ff9935a13a2b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=742&q=80" alt="">
+        <img class="img-fluid" :src="firstPicture" alt="">
 
     </div>
 
@@ -21,8 +21,9 @@
 import { useRouter } from 'vue-router'
 import { logger } from '../utils/Logger'
 import { keepsService } from '../services/KeepsService'
-import { onMounted } from 'vue'
+import { computed, onMounted } from 'vue'
 import Pop from '../utils/Pop'
+import { AppState } from '../AppState'
 
 export default {
     props: { vault: { type: Object, required: true } },
@@ -30,30 +31,22 @@ export default {
         function heightWiggle() {
             return (Math.random() * 10 + 25).toFixed() + "vh"
         };
-       
-        let firstImgInVault = ''
+
         onMounted(async () => {
             try {
-                 firstImgInVault = await keepsService.GetKeepsByVault(props.vault.id)
+                await keepsService.GetKeepsByVault(props.vault.id)
             } catch (error) {
                 Pop.toast(error, "error")
                 logger.error(error)
             }
         })
-
-        const test = "https://thiscatdoesnotexist.com"
-
+        let firstPicture = keepsService.findVault(props.vault.id).firstPicture
         const router = useRouter();
         let variedHeight = heightWiggle();
         return {
             variedHeight,
-            firstImgInVault,
-            test,
-            goProfile() {
-                logger.log('pushing with id', props.vault.creatorId)
-                router.push({ name: "Profile", params: { id: props.vault.creatorId } })
-            },
-
+            firstPicture,
+            
         }
     }
 }
