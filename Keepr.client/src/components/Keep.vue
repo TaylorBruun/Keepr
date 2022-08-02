@@ -1,6 +1,6 @@
 <template>
 
-    <div :style="{ backgroundImage: `url(${keep.img})`, minHeight: variedHeight }"
+    <div @click="setActive" :style="{ backgroundImage: `url(${keep.img})`, minHeight: variedHeight }"
         class="position-relative keep-card p-3 m-2">
 
         <h3>{{ keep.name }}</h3>
@@ -16,7 +16,9 @@
 
 
 <script>
+import { Modal } from 'bootstrap';
 import { useRoute, useRouter } from 'vue-router'
+import { AppState } from '../AppState';
 import { logger } from '../utils/Logger'
 
 export default {
@@ -35,6 +37,10 @@ export default {
             goToProfile() {
                 router.push({ name: "Profile", params: { id: props.keep.creatorId } })
             },
+            setActive(){
+                AppState.activeKeep = props.keep
+                Modal.getOrCreateInstance(document.getElementById('keep-modal')).toggle()
+            }
 
         }
     }
