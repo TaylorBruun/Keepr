@@ -36,6 +36,12 @@ class VaultsService {
         return res.data
 
     }
+
+    async createVault(vaultData) {
+        const res = await api.post('api/vaults', vaultData)
+        logger.log(res.data)
+        return res.data
+      }
 }
 
 export const vaultsService = new VaultsService()

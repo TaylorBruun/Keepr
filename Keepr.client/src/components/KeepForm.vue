@@ -32,13 +32,12 @@
 
 <script>
 import { ref } from "@vue/reactivity"
-
 import Pop from "../utils/Pop"
-
 import { onMounted, watchEffect } from '@vue/runtime-core'
 import { Modal } from "bootstrap"
 import { useRouter } from "vue-router"
 import { logger } from "../utils/Logger"
+import { keepsService } from '../services/KeepsService'
 
 export default {
     
@@ -54,7 +53,6 @@ export default {
                     logger.log('here is the new keep', newKeep)
                     Pop.toast('Keep created', 'success')
                     Modal.getOrCreateInstance(document.getElementById('create-keep')).hide()
-                    router.push({name: "Keep", params: {id: newKeep.id}})
                     editable.value = {}
                 } catch (error) {
                     Pop.error(error)

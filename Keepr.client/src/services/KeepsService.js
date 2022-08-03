@@ -28,13 +28,19 @@ class KeepsService {
     let id = AppState.activeKeep.id
     const res = await api.delete(`api/keeps/${id}`)
     AppState.homeKeeps = AppState.homeKeeps.filter(keep => keep.id != id)
+    AppState.currentProfileKeeps = AppState.currentProfileKeeps.filter(keep => keep.id != id)
     Modal.getOrCreateInstance(document.getElementById('keep-modal')).toggle()
     Pop.toast("Keep Deleted", 'success')
     return res.data
 
   }
 
+  async createKeep(keepData) {
+    const res = await api.post('api/keeps', keepData)
+    logger.log(res.data)
+    return res.data
 
+  }
 
 }
 

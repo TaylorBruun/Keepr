@@ -120,6 +120,8 @@ export default {
     setup() {
         const route = useRoute();
         watchEffect(() => AppState.currentProfileVaults = [...AppState.currentProfileVaults])
+    watchEffect(() => AppState.homeKeeps = [...AppState.homeKeeps])
+
         onMounted(async () => {
             try {
                 await profilesService.GetProfile(route.params.id);

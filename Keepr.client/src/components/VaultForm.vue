@@ -43,6 +43,7 @@ import { onMounted, watchEffect } from '@vue/runtime-core'
 import { Modal } from "bootstrap"
 import { useRouter } from "vue-router"
 import { logger } from "../utils/Logger"
+import { vaultsService } from '../services/VaultsService'
 
 export default {
     
