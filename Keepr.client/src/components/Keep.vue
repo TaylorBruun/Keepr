@@ -6,6 +6,8 @@
         <h3>{{ keep.name }}</h3>
         <h6>Keeps: {{ keep.kept }}| Views: {{ keep.views }}</h6>
         <h6>{{ keep.description }}</h6>
+        <i v-if="route.name == 'Vault' && user.id == activeVault.creatorId" @click.stop="removeFromVault"
+            title="Delete" class="m-2 delete-btn position-absolute bottom-0 start-0 mdi mdi-delete-forever" ></i>
         <img v-if="route.name != 'Profile'" @click.stop="goToProfile"
             class="m-2 creator-img position-absolute bottom-0 end-0" :src="keep.creator.picture" alt="">
 
@@ -17,9 +19,11 @@
 
 <script>
 import { Modal } from 'bootstrap';
+import { computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router'
 import { AppState } from '../AppState';
 import { keepsService } from '../services/KeepsService';
+import { vaultKeepsService } from '../services/VaultKeepsService';
 import { logger } from '../utils/Logger'
 
 export default {
@@ -35,8 +39,14 @@ export default {
         return {
             route,
             variedHeight,
+            user: computed(()=> AppState.account),
+            activeVault: computed(()=> AppState.activeVault),
             goToProfile() {
                 router.push({ name: "Profile", params: { id: props.keep.creatorId } })
+            },
+            removeFromVault() {
+                const keepId = props.keep.id
+                vaultKeepsService.removeFromVault(keepId)
             },
             setActive(){
                 this.incrementViews(props.keep.id)
@@ -76,6 +86,13 @@ export default {
     opacity: 0.9
 }
 
+.delete-btn{
+    color: red;
+    font-size: 1.5rem;
+}
+.delete-btn:hover{
+    transform: scale(1.1)
+}
 
 .creator-img {
     width: 30px;
