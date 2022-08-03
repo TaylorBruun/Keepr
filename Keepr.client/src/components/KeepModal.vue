@@ -23,7 +23,7 @@
                         </div>
                         <div class="col-6 position-relative">
                             <div>
-                                <h2 class="border-bottom display-4">{{ keep.name }}{{keep.id}}</h2>
+                                <h2 class="border-bottom display-4">{{ keep.name }}</h2>
                             </div>
                             <div>
                                 <h6 class="text-muted"><em>
@@ -43,7 +43,8 @@
                                 <!-- creator info -->
                                 <div class="col-6">
                                     <h6 class="text-break">
-                                        <img class="creator-img" :src="keep?.creator?.picture" alt="">
+                                        <img @click.stop="goToProfile" class="creator-img" :src="keep?.creator?.picture"
+                                            alt="">
                                         {{ keep?.creator?.name }}
 
                                     </h6>
@@ -61,20 +62,27 @@
 
 
 <script>
+import { Modal } from 'bootstrap'
 import { computed } from 'vue'
+import { useRouter } from 'vue-router'
 import { AppState } from '../AppState'
+import { router } from '../router'
 import { keepsService } from '../services/KeepsService'
 import Pop from '../utils/Pop'
 
 export default {
     setup() {
+        const router = useRouter()
         return {
             keep: computed(() => AppState.activeKeep),
-
-            async deleteKeep(){
-                if(await Pop.confirm('Are you sure you want to delete this Keep?')){
+            goToProfile() {
+                router.push({ name: "Profile", params: { id: AppState.activeKeep.creatorId } })
+                Modal.getOrCreateInstance(document.getElementById('keep-modal')).toggle()
+            },
+            async deleteKeep() {
+                if (await Pop.confirm('Are you sure you want to delete this Keep?')) {
                     keepsService.deleteKeep()
-                    
+
                 }
             }
         }

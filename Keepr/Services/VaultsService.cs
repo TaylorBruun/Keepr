@@ -29,7 +29,8 @@ namespace Keepr.Services
             {
                 throw new Exception("Invalid Id");
             }
-            if (found.IsPrivate == true && found.CreatorId != userId){
+            if (found.IsPrivate == true && found.CreatorId != userId)
+            {
                 throw new Exception("This Vault is private");
             }
             return found;
@@ -66,13 +67,22 @@ namespace Keepr.Services
 
         internal List<Vault> GetVaultsByProfile(string profileId)
         {
-             Profile found = _profilesService.GetById(profileId);
+            Profile found = _profilesService.GetById(profileId);
             if (found == null)
             {
                 throw new Exception("Invalid Id");
             }
-            
             return _repo.GetVaultsByProfile(profileId);
+        }
+
+        internal Dictionary<int, string> GetFirstImagesPerVaultByAccount(string profileId)
+        {
+            Profile found = _profilesService.GetById(profileId);
+            if (found == null)
+            {
+                throw new Exception("Invalid Id");
+            }
+            return _repo.GetFirstImagesPerVaultByAccount(profileId);
         }
     }
 }

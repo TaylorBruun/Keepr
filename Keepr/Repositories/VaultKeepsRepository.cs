@@ -28,9 +28,9 @@ namespace Keepr.Repositories
         {
         string sql = "SELECT * FROM vaultKeeps WHERE vaultKeeps.id=@vaultKeepId LIMIT 1";
             return _db.Query<VaultKeep>(sql, new{vaultKeepId}).FirstOrDefault();
-
-           
         }
+
+        
 
         internal void Delete(int vaultKeepId)
         {

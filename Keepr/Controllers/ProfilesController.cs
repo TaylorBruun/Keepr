@@ -66,5 +66,20 @@ namespace Keepr.Controllers
                 return BadRequest(exception.Message);
             }
         }
+        // NOTE get dictionary of vaultId + a keep URL by profile
+        [HttpGet("{profileId}/vaultsImgs")]
+        public ActionResult<Dictionary<int, string>> GetFirstImagesPerVaultByAccount(string profileId)
+        {
+            try
+            {
+                Dictionary<int, string> dictionary = _vaultsService.GetFirstImagesPerVaultByAccount(profileId);
+                return Ok(dictionary);
+            }
+            catch (System.Exception exception)
+            {
+                return BadRequest(exception.Message);
+            }
+        }
+
     }
 }

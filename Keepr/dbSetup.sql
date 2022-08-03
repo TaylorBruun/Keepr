@@ -12,7 +12,7 @@ CREATE TABLE
     IF NOT EXISTS keeps(
         id INT(255) AUTO_INCREMENT NOT NULL PRIMARY KEY,
         name VARCHAR(255) NOT NULL,
-        description VARCHAR(255) NOT NULL,
+        description TEXT NOT NULL,
         img VARCHAR(255) NOT NULL,
         views INT DEFAULT 0 NOT NULL,
         kept INT DEFAULT 0 NOT NULL,
@@ -25,7 +25,7 @@ CREATE TABLE
     IF NOT EXISTS vaults(
         id INT(255) AUTO_INCREMENT NOT NULL PRIMARY KEY,
         name VARCHAR(255) NOT NULL,
-        description VARCHAR(255) NOT NULL,
+        description TEXT NOT NULL,
         isPrivate TINYINT NOT NULL,
         creatorId VARCHAR(255),
         FOREIGN KEY (creatorId) REFERENCES accounts(id) ON DELETE CASCADE
@@ -38,8 +38,23 @@ CREATE TABLE
         keepId INT NOT NULL,
         creatorId VARCHAR(255),
         FOREIGN KEY (creatorId) REFERENCES accounts(id) ON DELETE CASCADE,
-        FOREIGN KEY (vaultId) REFERENCES vaults(id),
-        FOREIGN KEY (keepId) REFERENCES keeps(id)
+        FOREIGN KEY (vaultId) REFERENCES vaults(id) ON DELETE CASCADE,
+        FOREIGN KEY (keepId) REFERENCES keeps(id) ON DELETE CASCADE
     ) default charset utf8 COMMENT '';
 
-SELECT keeps.*, accounts.*, vaultKeeps.id from keeps JOIN vaultKeeps ON vaultKeeps.keepId = keeps.id JOIN accounts ON accounts.id = keeps.creatorId WHERE vaultKeeps.vaultId = 28;
+SELECT (keeps.img), accounts.*, vaultKeeps.id from keeps JOIN vaultKeeps ON vaultKeeps.keepId = keeps.id JOIN accounts ON accounts.id = keeps.creatorId WHERE accounts.id = 15;
+
+SELECT (vaultKeeps.vaultId), keeps.img FROM vaultKeeps JOIN keeps ON keeps.id = vaultKeeps.keepId WHERE vaultKeeps.creatorId = "62b3502c60b7283da2dc7bbb" GROUP BY vaultId;
+
+
+SELECT (vaultKeeps.vaultId) AS vaultId, keeps.img AS Url FROM vaultKeeps JOIN keeps ON keeps.id = vaultKeeps.keepId WHERE vaultKeeps.creatorId = "62b3502c60b7283da2dc7bbb" GROUP BY vaultId;
+
+SELECT DISTINCT (vaultKeeps.vaultId) AS id, keeps.img AS Url FROM vaultKeeps JOIN keeps ON keeps.id = vaultKeeps.keepId WHERE vaultKeeps.creatorId = "62b3502c60b7283da2dc7bbb" GROUP BY vaultId;
+
+SELECT * FROM vaultKeeps GROUP BY vaultId;
+
+
+
+
+
+

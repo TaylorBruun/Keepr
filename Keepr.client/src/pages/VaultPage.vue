@@ -1,40 +1,70 @@
 <template>
-    <div class="component">
-
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-12">
+        <h2 class="display-4 m-3 p-2">{{ vault.name }}</h2>
+        <h6 class="m-3 p-2"><i class="mdi mdi-key-star"></i> {{ keeps.length }} Keeps <i
+            v-if="account.id == vault.creatorId" @click="deleteVault" class="delete-icon mdi mdi-delete-forever"></i>
+        </h6>
+        <h6 class="m-3 p-2 text-muted">{{ vault.description }}</h6>
+      </div>
     </div>
+  </div>
+  <div class="masonry-frame">
+    <Keep v-for="k in keeps" :key=k.id :keep=k />
+  </div>
 </template>
 
 
 <script>
-import { onMounted } from 'vue'
-import { useRoute } from 'vue-router'
+import { computed, onMounted } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import { AppState } from '../AppState'
+import { keepsService } from '../services/KeepsService'
 import { vaultsService } from '../services/VaultsService'
+import { logger } from '../utils/Logger'
+import Pop from '../utils/Pop'
 
 export default {
-    setup(){
+  setup() {
 
-      const route = useRoute()
+    const route = useRoute()
 
-      onMounted(()=>{
-        vaultsService.getVaultById(route.params.id)
-      })
+    onMounted(async () => {
+      try {
+        await vaultsService.getVaultById(route.params.id)
+        await keepsService.GetKeepsByVault(route.params.id)
+      } catch (error) {
+        Pop.toast(error, "error");
+        logger.error(error);
+      }
+    })
 
-        return {
-          route,
+    return {
+      route,
+      vault: computed(() => AppState.activeVault),
+      keeps: computed(() => AppState.currentKeepsByVault),
+      account: computed(() => AppState.account),
+      async deleteVault() {
+        if (await Pop.confirm('Are you sure you want to delete this Vault?')) {
+          vaultsService.deleteVault()
         }
+      }
     }
+  }
 }
 </script>
 
 
 <style lang="scss" scoped>
-  .masonry-frame {
-    columns: 4;
-  
-    div {
-      break-inside: avoid;
-    }
+.masonry-frame {
+  columns: 4;
+
+  div {
+    break-inside: avoid;
   }
+}
+
 @media (max-width: 768px) {
   .masonry-frame {
     columns: 2;

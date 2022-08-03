@@ -1,7 +1,7 @@
 <template>
 
     <div @click="setActive" :style="{ backgroundImage: `url(${keep.img})`, minHeight: variedHeight }"
-        class="position-relative keep-card p-3 m-2">
+        class="position-relative keep-card p-3 m-3">
 
         <h3>{{ keep.name }}</h3>
         <h6>Keeps: {{ keep.kept }}| Views: {{ keep.views }}</h6>
