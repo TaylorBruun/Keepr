@@ -23,8 +23,8 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="masonry-frame">
-                            <div v-if="account.id == profile.id" @click="" data-bs-toggle="modal" data-bs-target="#create-vault" :style="{ minHeight: variedHeight }"
-                                class="new-item p-3 m-3">
+                            <div v-if="account.id == profile.id" @click="" data-bs-toggle="modal"
+                                data-bs-target="#create-vault" class="new-item p-3 m-3">
                                 <h3>Create New Vault</h3>
                                 <h6></h6>
                                 <h1 class="text-center display-1"><i class="mdi mdi-plus"></i></h1>
@@ -45,8 +45,8 @@
                     <div class="col-12">
                         <div class="masonry-frame">
 
-                            <div v-if="account.id == profile.id" @click="" data-bs-toggle="modal" data-bs-target="#create-keep" :style="{ minHeight: variedHeight }"
-                                class="new-item p-3 m-3">
+                            <div v-if="account.id == profile.id" @click="" data-bs-toggle="modal"
+                                data-bs-target="#create-keep" class="new-item p-3 m-3">
                                 <h3>Create New Keep</h3>
                                 <h6></h6>
                                 <h1 class="text-center display-1"><i class="mdi mdi-plus"></i></h1>
@@ -120,7 +120,7 @@ export default {
     setup() {
         const route = useRoute();
         watchEffect(() => AppState.currentProfileVaults = [...AppState.currentProfileVaults])
-    watchEffect(() => AppState.homeKeeps = [...AppState.homeKeeps])
+        watchEffect(() => AppState.homeKeeps = [...AppState.homeKeeps])
 
         onMounted(async () => {
             try {

@@ -19,6 +19,7 @@
 import { Modal } from 'bootstrap';
 import { useRoute, useRouter } from 'vue-router'
 import { AppState } from '../AppState';
+import { keepsService } from '../services/KeepsService';
 import { logger } from '../utils/Logger'
 
 export default {
@@ -38,8 +39,13 @@ export default {
                 router.push({ name: "Profile", params: { id: props.keep.creatorId } })
             },
             setActive(){
+                this.incrementViews(props.keep.id)
                 AppState.activeKeep = props.keep
                 Modal.getOrCreateInstance(document.getElementById('keep-modal')).toggle()
+            },
+            async incrementViews(id){
+                   await keepsService.incrementViews(id) 
+                   AppState.activeKeep.views++
             }
 
         }

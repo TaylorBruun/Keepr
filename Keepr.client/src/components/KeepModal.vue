@@ -1,6 +1,6 @@
 <template>
     <div class="modal fade" id="keep-modal" tabindex="-1" aria-labelledby="" aria-hidden="true">
-        <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-dialog modal-xl modal-fullscreen-lg-down modal-dialog-centered">
             <div class="modal-content">
                 <div class="row  border-0 modal-header">
                     <div class="col-3">
@@ -34,7 +34,17 @@
                             <div class="row position-absolute bottom-0">
                                 <!-- add to vault -->
                                 <div class="col-3">
-                                    <h6><i class="mdi mdi-key-star"></i></h6>
+
+<div class="btn-group dropup">
+  <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+    Add to Vault
+  </button>
+  <ul class="dropdown-menu">
+    <AddToVault v-for="v in userVaults" :key="v.id" :vault="v"/>
+  </ul>
+</div>
+
+                                    
                                 </div>
                                 <!-- delete if creator -->
                                 <div @click.stop="deleteKeep" class="col-2">
@@ -69,24 +79,26 @@ import { AppState } from '../AppState'
 import { router } from '../router'
 import { keepsService } from '../services/KeepsService'
 import Pop from '../utils/Pop'
+import AddToVault from './AddToVault.vue'
 
 export default {
     setup() {
-        const router = useRouter()
+        const router = useRouter();
         return {
             keep: computed(() => AppState.activeKeep),
+            userVaults: computed(()=> AppState.userVaults),
             goToProfile() {
-                router.push({ name: "Profile", params: { id: AppState.activeKeep.creatorId } })
-                Modal.getOrCreateInstance(document.getElementById('keep-modal')).toggle()
+                router.push({ name: "Profile", params: { id: AppState.activeKeep.creatorId } });
+                Modal.getOrCreateInstance(document.getElementById("keep-modal")).toggle();
             },
             async deleteKeep() {
-                if (await Pop.confirm('Are you sure you want to delete this Keep?')) {
-                    keepsService.deleteKeep()
-
+                if (await Pop.confirm("Are you sure you want to delete this Keep?")) {
+                    keepsService.deleteKeep();
                 }
             }
-        }
-    }
+        };
+    },
+    components: { AddToVault }
 }
 </script>
 

@@ -26,7 +26,7 @@ export default {
 
         const router = useRouter();
         let variedHeight = heightWiggle();
-        let firstPicture = vaultsService.findFirstKeepInVault(props.vault.id).firstPicture
+        let firstPicture = vaultsService.getFirstVault(props.vault.id).firstPicture
         function heightWiggle() {
             return (Math.random() * 10 + 25).toFixed() + "vh"
         };
