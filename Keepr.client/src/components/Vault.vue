@@ -1,13 +1,10 @@
 <template>
-
     <!-- TODO get the picture to display on first visit to profile page -->
     <div @click="goToVault" :style="{ minHeight: variedHeight }" class="vault-card p-3 m-3">
         <h3>{{ vault.name }}</h3>
         <h6>{{ vault.description }}</h6>
         <img class="img-fluid" :src="firstPicture" alt="">
-
     </div>
-
 </template>
 
 
@@ -23,14 +20,13 @@ import { vaultsService } from '../services/VaultsService'
 export default {
     props: { vault: { type: Object, required: true } },
     setup(props) {
-
         const router = useRouter();
         let variedHeight = heightWiggle();
         let firstPicture = vaultsService.getFirstVault(props.vault.id).firstPicture
         function heightWiggle() {
             return (Math.random() * 10 + 25).toFixed() + "vh"
         };
-  
+
         return {
             variedHeight,
             firstPicture,

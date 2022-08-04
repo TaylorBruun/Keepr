@@ -22,12 +22,12 @@
             height="40"
             class="rounded"
           />
-          <span class="mx-3 text-success lighten-30">{{ account.name }}</span>
+          <span class="mx-3 text-dark">{{ account.name }}</span>
         </div>
       </div>
       <div
         class="dropdown-menu p-0 list-group w-100"
-        aria-labelledby="authDropdown"
+        
       >
         <router-link :to="{ name: 'Profile', params: { id: account.id } }">
           <div class="list-group-item list-group-item-action hoverable">

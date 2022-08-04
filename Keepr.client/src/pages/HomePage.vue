@@ -41,6 +41,15 @@ export default {
   }
 }
 
+  @media (max-width: 1200px) {
+    .masonry-frame {
+      columns: 3;
+  
+      div {
+        break-inside: avoid;
+      }
+    }
+  }
 @media (max-width: 768px) {
   .masonry-frame {
     columns: 2;
@@ -50,4 +59,5 @@ export default {
     }
   }
 }
+
 </style>
