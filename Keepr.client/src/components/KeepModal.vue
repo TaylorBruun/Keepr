@@ -2,16 +2,16 @@
     <div class="modal fade" id="keep-modal" tabindex="-1" aria-labelledby="" aria-hidden="true">
         <div class="modal-dialog modal-xl modal-fullscreen-lg-down modal-dialog-centered">
             <div class="modal-content ">
-                <div class="row  border-0 modal-header">
+                <div @click.stop="goToProfile" class="row  border-0 modal-header">
 
-                    <div class="col-7 d-flex m-1 p-1 align-items-center">
-                        <img @click.stop="goToProfile" class="creator-img" :src="keep?.creator?.picture" alt="">
-                        <h6 class="m-2 text-break">
+                    <div class=" col-7 d-flex m-1 p-1 align-items-center">
+                        <img  class="selectable creator-img" :src="keep?.creator?.picture" alt="">
+                        <h6 class="selectable m-2 text-break">
                             {{ keep?.creator?.name }}
                         </h6>
                     </div>
                     <div class="col-2">
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <button type="button" title="Close" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                 </div>
                 <div class="modal-body">
@@ -23,7 +23,7 @@
                                 <!-- add to vault -->
                                 <div class="col-5 me-5 m-2">
                                     <div class="btn-group dropup">
-                                        <button type="button" class="btn drop-btn  dropdown-toggle"
+                                        <button v-if="account.id" type="button" class="btn drop-btn  dropdown-toggle"
                                             data-bs-toggle="dropdown" aria-expanded="false">
                                             Add to Vault
                                         </button>
@@ -35,7 +35,7 @@
                                 <!-- delete if creator -->
                                 <div v-if="keep.creatorId == account.id" @click.stop="deleteKeep"
                                     class="col-2 selectable p-2 ms-3">
-                                    <i class="delete-icon mdi mdi-delete"></i>
+                                    <i title="Delete" class="delete-icon mdi mdi-delete">Delete</i>
                                 </div>
                             </div>
                         </div>

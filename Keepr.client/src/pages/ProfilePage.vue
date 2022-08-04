@@ -40,7 +40,7 @@
             </div>
         </div>
 
-        <div class="small-spacer"></div>
+        <div class="spacer"></div>
 
         <div class="mb-4">
             <h4 class="m-2 p-2"> Keeps:</h4>
@@ -73,7 +73,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Create a new Vault</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" title="Close" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <VaultForm />
@@ -93,7 +93,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Create a new Keep</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" title="Close" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <KeepForm />
@@ -182,12 +182,10 @@ export default {
 }
 
 .spacer {
-    height: 15vh;
-}
-
-.small-spacer {
     height: 5vh;
 }
+
+
 
 .masonry-frame {
     columns: 4;
