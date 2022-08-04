@@ -30,6 +30,25 @@ export default class Pop {
       return false
     }
   }
+  static async confirmRemove(title = 'Are you sure?', text = "You can always add it again later.", icon = 'warning', confirmButtonText = 'Yes, remove it!') {
+    try {
+      const res = await Swal.fire({
+        title: title,
+        text: text,
+        icon: icon,
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: confirmButtonText
+      })
+      if (res.isConfirmed) {
+        return true
+      }
+      return false
+    } catch (error) {
+      return false
+    }
+  }
 
   /**
  *

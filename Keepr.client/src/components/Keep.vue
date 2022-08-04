@@ -45,7 +45,8 @@ export default {
             goToProfile() {
                 router.push({ name: "Profile", params: { id: props.keep.creatorId } })
             },
-            removeFromVault() {
+            async removeFromVault() {
+                if (await Pop.confirmRemove("Are you sure you want to remove this Keep from the Vault?")) {
                 try {
                     const keepId = props.keep.id
                     vaultKeepsService.removeFromVault(keepId)
@@ -53,7 +54,7 @@ export default {
                     Pop.toast(error, "error")
                     logger.error(error)
                 }
-            },
+            }},
             setActive() {
                 this.incrementViews(props.keep.id)
                 AppState.activeKeep = props.keep

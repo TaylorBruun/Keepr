@@ -3,8 +3,8 @@
     <div class="row">
       <div class="col-12">
         <h2 class="display-4 m-3 p-2">{{ vault.name }}</h2>
-        <h6 class="m-3 p-2"><i class="mdi mdi-key-star"></i> {{ keeps.length }} Keeps <i
-            v-if="account.id == vault.creatorId" @click="deleteVault" title="Delete" class="delete-icon mdi mdi-delete-forever"></i>
+        <h6 class="d-flex align-items-center m-3 p-2"><i class="mdi mdi-key-star"></i> {{ keeps.length }} Keeps | <i
+            v-if="account.id == vault.creatorId" @click="deleteVault" title="Delete" class="delete-btn delete-icon mdi mdi-delete-forever"></i>
         </h6>
         <h6 class="m-3 p-2 text-muted">{{ vault.description }}</h6>
       </div>
@@ -61,6 +61,8 @@ export default {
 
 
 <style lang="scss" scoped>
+@import "../assets/scss/variables";
+
 .masonry-frame {
   columns: 4;
 
@@ -86,6 +88,16 @@ export default {
       break-inside: avoid;
     }
   }
+}
+
+.delete-btn {
+    color: red;
+    font-size: 1.5rem;
+}
+
+.icon-labels{
+    color: $keepr-primary;
+    font-size: 1.3rem;
 }
 
 </style>

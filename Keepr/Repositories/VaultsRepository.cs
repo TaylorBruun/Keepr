@@ -72,8 +72,7 @@ namespace Keepr.Repositories
 
         internal Dictionary<int, string> GetFirstImagesPerVaultByAccount(string profileId)
         {
-            
-            string sql = "SELECT (vaultKeeps.vaultId) AS Id, keeps.img AS Url FROM vaultKeeps JOIN keeps ON keeps.id = vaultKeeps.keepId WHERE vaultKeeps.creatorId = @profileId GROUP BY vaultId;";
+            string sql = "SELECT vaultKeeps.vaultId, keeps.img AS Id FROM vaultKeeps JOIN keeps ON keeps.id = vaultKeeps.keepId WHERE vaultKeeps.creatorId = @profileId GROUP BY vaultId ;";
             return _db.Query<int, string,  KeyValuePair<int, string>>(sql, (int Id, string Url) => {
                 KeyValuePair<int, string> kv = new KeyValuePair<int, string>(Id, Url);
                 return kv;

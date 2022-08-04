@@ -29,11 +29,11 @@
         class="dropdown-menu p-0 list-group w-100"
         
       >
-        <router-link :to="{ name: 'Profile', params: { id: account.id } }">
-          <div class="list-group-item list-group-item-action hoverable">
+       
+          <div @click="goToProfile" class="list-group-item list-group-item-action hoverable">
             View Profile
           </div>
-        </router-link>
+        
         <div
           class="list-group-item list-group-item-action hoverable text-danger"
           @click="logout"
@@ -49,11 +49,16 @@
 
 <script>
 import { computed } from "@vue/reactivity";
+import { useRouter } from "vue-router";
 import { AppState } from "../AppState";
 import { AuthService } from "../services/AuthService";
 export default {
   setup() {
+    const router = useRouter()
     return {
+      goToProfile(){
+        router.push({ name: "Profile", params: {id: AppState.account.id}})
+      },
       user: computed(() => AppState.user),
       account: computed(() => AppState.account),
       async login() {

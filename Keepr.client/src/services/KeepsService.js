@@ -13,11 +13,7 @@ class KeepsService {
     AppState.homeKeeps = res.data
   }
 
-  async GetFirstPictureByVault(vaultId) {
-    const res = await api.get(`api/vaults/${vaultId}/keeps`)
-    let imgUrl = res.data[0]?.img
-    vaultsService.setFirstPicture(vaultId, imgUrl)
-  }
+  
   async GetKeepsByVault(vaultId) {
     const res = await api.get(`api/vaults/${vaultId}/keeps`)
     AppState.currentKeepsByVault = res.data

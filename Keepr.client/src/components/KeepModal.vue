@@ -2,9 +2,9 @@
     <div class="modal fade" id="keep-modal" tabindex="-1" aria-labelledby="" aria-hidden="true">
         <div class="modal-dialog modal-xl modal-fullscreen-lg-down modal-dialog-centered">
             <div class="modal-content ">
-                <div @click.stop="goToProfile" class="row  border-0 modal-header">
+                <div class="row  border-0 modal-header">
 
-                    <div class=" col-7 d-flex m-1 p-1 align-items-center">
+                    <div @click.stop="goToProfile" class=" col-7 d-flex m-1 p-1 align-items-center">
                         <img  class="selectable creator-img" :src="keep?.creator?.picture" alt="">
                         <h6 class="selectable m-2 text-break">
                             {{ keep?.creator?.name }}

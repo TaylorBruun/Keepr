@@ -3,36 +3,31 @@
     <div @click="goToVault" :style="{ minHeight: variedHeight }" class="vault-card p-3 m-3">
         <h3>{{ vault.name }}</h3>
         <h6>{{ vault.description }}</h6>
-        <img class="img-fluid" :src="firstPicture" alt="">
+        <img class="img-fluid" :src="firstImagesDictionary" alt="">
     </div>
 </template>
 
-
 <script>
 import { useRouter } from 'vue-router'
-import { logger } from '../utils/Logger'
-import { keepsService } from '../services/KeepsService'
 import { computed, onMounted } from 'vue'
-import Pop from '../utils/Pop'
 import { AppState } from '../AppState'
-import { vaultsService } from '../services/VaultsService'
 
 export default {
     props: { vault: { type: Object, required: true } },
     setup(props) {
         const router = useRouter();
         let variedHeight = heightWiggle();
-        let firstPicture = vaultsService.getFirstVault(props.vault.id).firstPicture
+        
         function heightWiggle() {
             return (Math.random() * 10 + 25).toFixed() + "vh"
         };
 
         return {
             variedHeight,
-            firstPicture,
+            firstImagesDictionary: computed(()=> AppState.firstImagesForVaults[props.vault.id]),
             goToVault() {
                 router.push({ name: "Vault", params: { id: props.vault.id } })
-            }
+            },
         }
     }
 }

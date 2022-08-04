@@ -13,5 +13,6 @@ export const AppState = reactive({
   currentKeepsByVault: [],
   userVaults: [],
   error: {},
+  firstImagesForVaults: {},
 
 })

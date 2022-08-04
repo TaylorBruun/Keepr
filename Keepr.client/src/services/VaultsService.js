@@ -15,23 +15,7 @@ class VaultsService {
         AppState.activeVault = res.data
         return res.data
 
-    }
-
-    getFirstVault(vaultId) {
-        let found = []
-        if (AppState.account.id == AppState.currentProfile.id) {
-            found = AppState.userVaults.filter(vault => vault.id == vaultId)
-        } else {
-            found = AppState.currentProfileVaults.filter(vault => vault.id == vaultId)
-        }
-        return found[0]
-    }
-
-    setFirstPicture(vaultId, imgUrl) {
-        let found = this.getFirstVault(vaultId)
-
-        found.firstPicture = imgUrl ?? "https://images.unsplash.com/photo-1577373644244-ff9935a13a2b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=742&q=80"
-    }
+    }   
 
     async deleteVault() {
         let id = AppState.activeVault.id
@@ -39,7 +23,6 @@ class VaultsService {
         Pop.toast("Vault Deleted", 'success')
         router.push({ name: "Profile" })
         return res.data
-
     }
 
     async createVault(vaultData) {
@@ -56,6 +39,11 @@ class VaultsService {
     async getUserVaults() {
         const res = await api.get('account/vaults')
         AppState.userVaults = res.data
+    }
+
+    async getFirstImagesDictionaryByProfile(profileId){
+        const res = await api.get(`api/profiles/${profileId}/vaultsimgs`)
+        AppState.firstImagesForVaults = res.data
     }
 }
 

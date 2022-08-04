@@ -49,7 +49,7 @@
                     <div class="col-12">
                         <div class="masonry-frame">
 
-                            <div @click="" data-bs-toggle="modal" data-bs-target="#create-keep"
+                            <div v-if="account.id == profile.id" @click="" data-bs-toggle="modal" data-bs-target="#create-keep"
                                 class="new-item p-3 m-3">
                                 <h3>Create New Keep</h3>
                                 <h6></h6>
@@ -119,52 +119,56 @@ import Vault from '../components/Vault.vue'
 import VaultForm from '../components/VaultForm.vue'
 import KeepForm from '../components/KeepForm.vue'
 import { keepsService } from '../services/KeepsService'
+import { vaultKeepsService } from '../services/VaultKeepsService'
+import { vaultsService } from '../services/VaultsService'
+
 
 export default {
     setup() {
         const route = useRoute();
-        watchEffect(() => {
-
-            AppState.currentProfileVaults;
-            AppState.currentProfileVaults.forEach(async vault => {
-                await keepsService.GetFirstPictureByVault(vault.id)
-            });
-        }),
-            watchEffect(() => {
-
-                AppState.userVaults;
-                AppState.userVaults.forEach(async vault => {
-                    await keepsService.GetFirstPictureByVault(vault.id)
-                });
-            }),
             watchEffect(() => AppState.homeKeeps = [...AppState.homeKeeps])
+            watchEffect(async() => {
+                route.params.id;
+                try {
+                    if(route.name == "Profile"){
+                        await profilesService.GetProfile(route.params.id);
+                        await profilesService.GetProfileKeeps(route.params.id);
+                        await profilesService.GetProfileVaults(route.params.id);
+                        await vaultsService.getFirstImagesDictionaryByProfile(route.params.id)
+                    }
+                    
+                } catch (error) {
+                    Pop.toast(error, "error");
+                logger.error(error);
+                }
+            })
 
         onMounted(async () => {
             try {
-                await profilesService.GetProfile(route.params.id);
-                await profilesService.GetProfileKeeps(route.params.id);
-                await profilesService.GetProfileVaults(route.params.id);
-                AppState.currentProfileVaults.forEach(async vault => {
-                    await keepsService.GetFirstPictureByVault(vault.id)
-                });
-                if (AppState.account.id == AppState.currentProfile.id) {
-                    AppState.userVaults.forEach(async vault => {
-                        await keepsService.GetFirstPictureByVault(vault.id)
-                    });
-                }
+                
+                // NOTE these are made redundant by the watchEffect. The watchEffect is used because if you are logged in and you hit the button to view your own profile from another user's profile page, the parameter will change but the page will not navigate (because the route has not changed)
+
+                // NOTE leaving these and the note for posterity (and an example of a refactor)
+
+                // await vaultsService.getFirstImagesDictionaryByProfile(route.params.id)
+                // await profilesService.GetProfile(route.params.id);
+                // await profilesService.GetProfileKeeps(route.params.id);
+                // await profilesService.GetProfileVaults(route.params.id);
+                
             }
             catch (error) {
-                Pop.toast(error, "error");
-                logger.error(error);
+                
             }
         });
+
         return {
             route,
             profile: computed(() => AppState.currentProfile),
             account: computed(() => AppState.account),
             profileKeeps: computed(() => AppState.currentProfileKeeps),
             profileVaults: computed(() => AppState.currentProfileVaults),
-            userVaults: computed(() => AppState.userVaults)
+            userVaults: computed(() => AppState.userVaults),
+            
         };
     },
 }
