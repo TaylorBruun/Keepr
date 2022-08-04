@@ -20,6 +20,7 @@
 import { computed, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { AppState } from '../AppState'
+import { router } from '../router'
 import { keepsService } from '../services/KeepsService'
 import { vaultsService } from '../services/VaultsService'
 import { logger } from '../utils/Logger'
@@ -29,15 +30,18 @@ export default {
   setup() {
 
     const route = useRoute()
+    const router = useRouter()
 
     onMounted(async () => {
       try {
         await vaultsService.getVaultById(route.params.id)
         await keepsService.GetKeepsByVault(route.params.id)
       } catch (error) {
-        Pop.toast(error, "error");
+        router.push({ name: "Home"})
+        Pop.toast("You do not have permission to view this Vault", "error");
         logger.error(error);
       }
+      
     })
 
     return {
