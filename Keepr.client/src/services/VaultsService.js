@@ -10,7 +10,7 @@ const router = useRouter();
 class VaultsService {
 
     async getVaultById(id) {
-        
+
         const res = await api.get(`api/vaults/${id}`)
         AppState.activeVault = res.data
         return res.data
@@ -18,7 +18,12 @@ class VaultsService {
     }
 
     getFirstVault(vaultId) {
-        let found = AppState.currentProfileVaults.filter(vault => vault.id == vaultId)
+        let found = []
+        if (AppState.account.id == AppState.currentProfile.id) {
+            found = AppState.userVaults.filter(vault => vault.id == vaultId)
+        } else {
+            found = AppState.currentProfileVaults.filter(vault => vault.id == vaultId)
+        }
         return found[0]
     }
 
@@ -32,20 +37,26 @@ class VaultsService {
         let id = AppState.activeVault.id
         const res = await api.delete(`api/vaults/${id}`)
         Pop.toast("Vault Deleted", 'success')
-        router.push({ name: "Profile"})
+        router.push({ name: "Profile" })
         return res.data
 
     }
 
     async createVault(vaultData) {
         const res = await api.post('api/vaults', vaultData)
-        return res.data
-      }
+        if (AppState.account.id == AppState.currentProfile.id) {
+            AppState.userVaults.unshift(res.data)
+        } else {
+            AppState.currentProfileVaults.unshift(res.data)
+        }
 
-      async getUserVaults(){
+        return res.data
+    }
+
+    async getUserVaults() {
         const res = await api.get('account/vaults')
         AppState.userVaults = res.data
-      }
+    }
 }
 
 export const vaultsService = new VaultsService()

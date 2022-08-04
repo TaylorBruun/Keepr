@@ -37,6 +37,7 @@ class KeepsService {
 
   async createKeep(keepData) {
     const res = await api.post('api/keeps', keepData)
+    AppState.currentProfileKeeps.unshift(res.data)
     return res.data
   }
 

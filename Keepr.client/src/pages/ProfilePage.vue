@@ -7,16 +7,17 @@
                 <h2 class="text-break m-4 display-2">
                     {{ profile.name }}
                 </h2>
-                <h5 class="m-4">Vaults: {{ profileVaults.length }} </h5>
-                <h5 class="m-4">Keeps: {{ profileKeeps.length }} </h5>
+                <div class="d-flex flex-column align-items-end">
+                    <h5 class="m-4">Vaults: {{ (account.id == profile.id ? userVaults.length : profileVaults.length) }}
+                    </h5>
+                    <h5 class="m-4">Keeps: {{ profileKeeps.length }} </h5>
+                </div>
             </div>
         </div>
         <div class="spacer"></div>
 
         <div>
             <h4 class="m-2 p-2"> Vaults:</h4>
-
-
 
 
             <div class="container-fluid">
@@ -29,7 +30,10 @@
                                 <h6></h6>
                                 <h1 class="text-center display-1"><i class="mdi mdi-plus"></i></h1>
                             </div>
-                            <Vault v-for="v in profileVaults" :key="v.id" :vault="v" />
+                            <Vault v-if="!(profile.id == account.id)" v-for="v in profileVaults" :key="v.id"
+                                :vault="v" />
+
+                            <Vault v-else v-for="uv in userVaults" :key="uv.id" :vault="uv" />
                         </div>
                     </div>
                 </div>
@@ -38,15 +42,15 @@
 
         <div class="small-spacer"></div>
 
-        <div class="">
-            <h4> Keeps:</h4>
+        <div class="mb-4">
+            <h4 class="m-2 p-2"> Keeps:</h4>
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-12">
                         <div class="masonry-frame">
 
-                            <div v-if="account.id == profile.id" @click="" data-bs-toggle="modal"
-                                data-bs-target="#create-keep" class="new-item p-3 m-3">
+                            <div @click="" data-bs-toggle="modal" data-bs-target="#create-keep"
+                                class="new-item p-3 m-3">
                                 <h3>Create New Keep</h3>
                                 <h6></h6>
                                 <h1 class="text-center display-1"><i class="mdi mdi-plus"></i></h1>
@@ -119,8 +123,21 @@ import { keepsService } from '../services/KeepsService'
 export default {
     setup() {
         const route = useRoute();
-        watchEffect(() => AppState.currentProfileVaults = [...AppState.currentProfileVaults])
-        watchEffect(() => AppState.homeKeeps = [...AppState.homeKeeps])
+        watchEffect(() => {
+
+            AppState.currentProfileVaults;
+            AppState.currentProfileVaults.forEach(async vault => {
+                await keepsService.GetFirstPictureByVault(vault.id)
+            });
+        }),
+            watchEffect(() => {
+
+                AppState.userVaults;
+                AppState.userVaults.forEach(async vault => {
+                    await keepsService.GetFirstPictureByVault(vault.id)
+                });
+            }),
+            watchEffect(() => AppState.homeKeeps = [...AppState.homeKeeps])
 
         onMounted(async () => {
             try {
@@ -130,6 +147,11 @@ export default {
                 AppState.currentProfileVaults.forEach(async vault => {
                     await keepsService.GetFirstPictureByVault(vault.id)
                 });
+                if (AppState.account.id == AppState.currentProfile.id) {
+                    AppState.userVaults.forEach(async vault => {
+                        await keepsService.GetFirstPictureByVault(vault.id)
+                    });
+                }
             }
             catch (error) {
                 Pop.toast(error, "error");
@@ -137,13 +159,14 @@ export default {
             }
         });
         return {
+            route,
             profile: computed(() => AppState.currentProfile),
             account: computed(() => AppState.account),
             profileKeeps: computed(() => AppState.currentProfileKeeps),
-            profileVaults: computed(() => AppState.currentProfileVaults)
+            profileVaults: computed(() => AppState.currentProfileVaults),
+            userVaults: computed(() => AppState.userVaults)
         };
     },
-    components: { Keep, Vault }
 }
 </script>
 
@@ -174,15 +197,16 @@ export default {
     }
 }
 
-    @media (max-width: 1200px) {
-      .masonry-frame {
+@media (max-width: 1200px) {
+    .masonry-frame {
         columns: 3;
-    
+
         div {
-          break-inside: avoid;
+            break-inside: avoid;
         }
-      }
     }
+}
+
 @media (max-width: 768px) {
     .masonry-frame {
         columns: 2;

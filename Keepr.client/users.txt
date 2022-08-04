@@ -1,0 +1,23 @@
+[
+name: "Duke of Venice",
+name: "Othello",
+name: "Desdemona",
+
+vaults
+
+dogs
+cats
+eagles?
+
+fantastic forests
+mediocre mesas
+delightful deltas
+
+towers (clock and otherwise)
+staircases
+various venues
+
+
+
+
+keeps
