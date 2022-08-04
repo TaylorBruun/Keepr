@@ -8,9 +8,7 @@
 
 
 <script>
-import { computed } from 'vue';
 import { AppState } from '../AppState';
-import { keepsService } from '../services/KeepsService';
 import { vaultKeepsService } from '../services/vaultKeepsService'
 import Pop from '../utils/Pop';
 
@@ -19,14 +17,12 @@ export default {
     props: { vault: { type: Object, required: true } },
     setup(props) {
         return {
-           
             async addKeepToVault() {
                 const vaultId = props.vault.id
                 const keepId = AppState.activeKeep.id
                 await vaultKeepsService.keep(vaultId, keepId)
                 Pop.toast("Keep added to Vault!", 'success')
                 AppState.activeKeep.kept++
-
             }
         }
     }
@@ -35,4 +31,5 @@ export default {
 
 
 <style lang="scss" scoped>
+
 </style>

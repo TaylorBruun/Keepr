@@ -6,8 +6,8 @@
         <h3>{{ keep.name }}</h3>
         <h6>Keeps: {{ keep.kept }}| Views: {{ keep.views }}</h6>
         <h6>{{ keep.description }}</h6>
-        <i v-if="route.name == 'Vault' && user.id == activeVault.creatorId" @click.stop="removeFromVault"
-            title="Delete" class="m-2 delete-btn position-absolute bottom-0 start-0 mdi mdi-delete-forever" ></i>
+        <i v-if="route.name == 'Vault' && user.id == activeVault.creatorId" @click.stop="removeFromVault" title="Delete"
+            class="m-2 delete-btn position-absolute bottom-0 start-0 mdi mdi-delete-forever"></i>
         <img v-if="route.name != 'Profile'" @click.stop="goToProfile"
             class="m-2 creator-img position-absolute bottom-0 end-0" :src="keep.creator.picture" alt="">
 
@@ -25,6 +25,7 @@ import { AppState } from '../AppState';
 import { keepsService } from '../services/KeepsService';
 import { vaultKeepsService } from '../services/VaultKeepsService';
 import { logger } from '../utils/Logger'
+import Pop from '../utils/Pop';
 
 export default {
     props: { keep: { type: Object, required: true } },
@@ -39,25 +40,34 @@ export default {
         return {
             route,
             variedHeight,
-            user: computed(()=> AppState.account),
-            activeVault: computed(()=> AppState.activeVault),
+            user: computed(() => AppState.account),
+            activeVault: computed(() => AppState.activeVault),
             goToProfile() {
                 router.push({ name: "Profile", params: { id: props.keep.creatorId } })
             },
             removeFromVault() {
-                const keepId = props.keep.id
-                vaultKeepsService.removeFromVault(keepId)
+                try {
+                    const keepId = props.keep.id
+                    vaultKeepsService.removeFromVault(keepId)
+                } catch (error) {
+                    Pop.toast(error, "error")
+                    logger.error(error)
+                }
             },
-            setActive(){
+            setActive() {
                 this.incrementViews(props.keep.id)
                 AppState.activeKeep = props.keep
                 Modal.getOrCreateInstance(document.getElementById('keep-modal')).toggle()
             },
-            async incrementViews(id){
-                   await keepsService.incrementViews(id) 
-                   AppState.activeKeep.views++
+            async incrementViews(id) {
+                try {
+                    await keepsService.incrementViews(id)
+                    AppState.activeKeep.views++
+                } catch (error) {
+                    Pop.toast(error, "error")
+                    logger.error(error)
+                }
             }
-
         }
     }
 }
@@ -66,6 +76,7 @@ export default {
 
 <style lang="scss" scoped>
 @import "../assets/scss/variables";
+
 .keep-card {
     background-color: rgb(224, 236, 238);
     color: rgb(5, 5, 5);
@@ -86,11 +97,12 @@ export default {
     opacity: 0.9
 }
 
-.delete-btn{
+.delete-btn {
     color: red;
     font-size: 1.5rem;
 }
-.delete-btn:hover{
+
+.delete-btn:hover {
     transform: scale(1.1)
 }
 

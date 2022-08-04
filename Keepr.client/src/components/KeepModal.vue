@@ -1,7 +1,7 @@
 <template>
     <div class="modal fade" id="keep-modal" tabindex="-1" aria-labelledby="" aria-hidden="true">
         <div class="modal-dialog modal-xl modal-fullscreen-lg-down modal-dialog-centered">
-            <div class="modal-content">
+            <div class="modal-content ">
                 <div class="row  border-0 modal-header">
                     <div class="col-3">
                         <h6 class="activity-icon"><i class="mdi mdi-key-star"></i> {{ keep.kept }}</h6>
@@ -19,9 +19,41 @@
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-6">
+                            <div class="row align-items-center">
+                                <!-- creator info -->
+                                <div class="col-1 m-2 p-1">
+                                    <img @click.stop="goToProfile" class="creator-img" :src="keep?.creator?.picture"
+                                        alt="">
+                                </div>
+                                <div class="col-9 m-2 p-2">
+                                    <h6 class="text-break">
+                                        {{ keep?.creator?.name }}
+                                    </h6>
+                                </div>
+                            </div>
                             <img class="img-fluid" :src="keep.img" alt="">
+                            <div class="row align-items-center">
+                                <!-- add to vault -->
+                                <div class="col-5 m-2">
+                                    <div class="btn-group dropup">
+                                        <button type="button" class="btn drop-btn  dropdown-toggle"
+                                            data-bs-toggle="dropdown" aria-expanded="false">
+                                            Add to Vault
+                                        </button>
+                                        <ul class="dropdown-menu">
+                                            <AddToVault v-for="v in userVaults" :key="v.id" :vault="v" />
+                                        </ul>
+                                    </div>
+                                </div>
+                                <!-- delete if creator -->
+                                <div v-if="keep.creatorId == account.id" @click.stop="deleteKeep" class="col-3 selectable p-2 m-2">
+                                    <i class="delete-icon mdi mdi-delete">Delete</i>
+                                </div>
+
+
+                            </div>
                         </div>
-                        <div class="col-6 position-relative">
+                        <div class="col-6">
                             <div>
                                 <h2 class="border-bottom display-4">{{ keep.name }}</h2>
                             </div>
@@ -30,37 +62,8 @@
                                         {{ keep.description }}
                                     </em></h6>
                             </div>
-                            <!-- NOTE consider alignment in some means other than absolute -->
-                            <div class="row position-absolute bottom-0">
-                                <!-- add to vault -->
-                                <div class="col-3">
 
-<div class="btn-group dropup">
-  <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-    Add to Vault
-  </button>
-  <ul class="dropdown-menu">
-    <AddToVault v-for="v in userVaults" :key="v.id" :vault="v"/>
-  </ul>
-</div>
 
-                                    
-                                </div>
-                                <!-- delete if creator -->
-                                <div @click.stop="deleteKeep" class="col-2">
-                                    <i class="delete-icon mdi mdi-delete-forever"></i>
-                                </div>
-                                <!-- creator info -->
-                                <div class="col-6">
-                                    <h6 class="text-break">
-                                        <img @click.stop="goToProfile" class="creator-img" :src="keep?.creator?.picture"
-                                            alt="">
-                                        {{ keep?.creator?.name }}
-
-                                    </h6>
-                                </div>
-
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -86,7 +89,8 @@ export default {
         const router = useRouter();
         return {
             keep: computed(() => AppState.activeKeep),
-            userVaults: computed(()=> AppState.userVaults),
+            userVaults: computed(() => AppState.userVaults),
+            account: computed(() => AppState.account),
             goToProfile() {
                 router.push({ name: "Profile", params: { id: AppState.activeKeep.creatorId } });
                 Modal.getOrCreateInstance(document.getElementById("keep-modal")).toggle();
@@ -121,4 +125,9 @@ export default {
     color: $danger;
     font-size: 1.2rem;
 }
+.drop-btn{
+    background-color: $keepr-secondary;
+    color: rgb(246, 248, 246);
+}
+
 </style>
