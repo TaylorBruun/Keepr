@@ -14,17 +14,12 @@ class KeepsService {
   }
 
   async GetFirstPictureByVault(vaultId) {
-    logger.log('before GetFirstPictureByVault')
     const res = await api.get(`api/vaults/${vaultId}/keeps`)
-    logger.log('after GetFirstPictureByVault')
     let imgUrl = res.data[0]?.img
     vaultsService.setFirstPicture(vaultId, imgUrl)
   }
   async GetKeepsByVault(vaultId) {
-    logger.log('before GetKeepsByVault')
     const res = await api.get(`api/vaults/${vaultId}/keeps`)
-    logger.log('after GetKeepsByVault')
-
     AppState.currentKeepsByVault = res.data
   }
 
@@ -42,9 +37,7 @@ class KeepsService {
 
   async createKeep(keepData) {
     const res = await api.post('api/keeps', keepData)
-    logger.log(res.data)
     return res.data
-
   }
 
   async incrementViews(id){

@@ -50,7 +50,6 @@ export default {
                 try {
                     let keepData = editable.value
                     let newKeep = await keepsService.createKeep(keepData)
-                    logger.log('here is the new keep', newKeep)
                     Pop.toast('Keep created', 'success')
                     Modal.getOrCreateInstance(document.getElementById('create-keep')).hide()
                     editable.value = {}

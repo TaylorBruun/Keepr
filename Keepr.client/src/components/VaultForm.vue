@@ -56,7 +56,6 @@ export default {
                 try {
                     let vaultData = editable.value
                     let newVault = await vaultsService.createVault(vaultData)
-                    logger.log('here is the new vault', newVault)
                     Pop.toast('Vault created', 'success')
                     Modal.getOrCreateInstance(document.getElementById('create-vault')).hide()
                     router.push({name: "Vault", params: {id: newVault.id}})

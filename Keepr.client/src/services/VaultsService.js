@@ -12,8 +12,6 @@ class VaultsService {
     async getVaultById(id) {
         
         const res = await api.get(`api/vaults/${id}`)
-        logger.log("passed getVaultById")
-        logger.log("here is get by Id res", res.data)
         AppState.activeVault = res.data
         return res.data
 
@@ -41,13 +39,11 @@ class VaultsService {
 
     async createVault(vaultData) {
         const res = await api.post('api/vaults', vaultData)
-        logger.log(res.data)
         return res.data
       }
 
       async getUserVaults(){
         const res = await api.get('account/vaults')
-        logger.log('here are account vaults', res.data)
         AppState.userVaults = res.data
       }
 }
