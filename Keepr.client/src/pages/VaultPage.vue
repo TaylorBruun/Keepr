@@ -4,7 +4,7 @@
       <div class="col-12">
         <h2 class="display-4 m-3 p-2">{{ vault.name }}</h2>
         <h6 class="d-flex align-items-center m-3 p-2"><i class="mdi mdi-key-star"></i> {{ keeps.length }} Keeps | <i
-            v-if="account.id == vault.creatorId" @click="deleteVault" title="Delete" class="delete-btn delete-icon mdi mdi-delete-forever"></i>
+            v-if="account.id == vault.creatorId" @click="deleteVault" title="Delete" class="delete-btn selectable delete-icon mdi mdi-delete-forever"></i>
         </h6>
         <h6 class="m-3 p-2 text-muted">{{ vault.description }}</h6>
       </div>

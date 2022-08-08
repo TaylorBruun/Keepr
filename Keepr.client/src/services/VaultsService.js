@@ -43,6 +43,7 @@ class VaultsService {
 
     async getFirstImagesDictionaryByProfile(profileId){
         const res = await api.get(`api/profiles/${profileId}/vaultsimgs`)
+        // logger.log(res.data)
         AppState.firstImagesForVaults = res.data
     }
 }
